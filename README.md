@@ -30,6 +30,19 @@ ghseek clone <github clone url> [目录位置] # 加速克隆代码
 ghseek down <github url> [文件名称] # 加速下载github文件，github url可以是 release url、raw url
 ```
 
+## Append Hosts
+
+添加的 hosts 类似于下面的内容，IP是通过 https://sites.ipaddress.com 获取的最新 DNS IP.
+
+```
+# ghseek github
+140.82.112.3 github.com # 330.561ms
+151.101.65.194 github.global.ssl.fastly.net # 65.126ms
+185.199.109.133 raw.githubusercontent.com # 70.693ms
+140.82.112.4 gist.github.com # 276.434ms
+# ghseek end
+```
+
 ## Contributors
 
 <!-- spellchecker: disable -->
