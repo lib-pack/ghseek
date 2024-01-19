@@ -42,10 +42,15 @@ ghseek down <github url> [文件名称] # 加速下载github文件，github url�
 
 ```
 # ghseek github
-140.82.112.3 github.com # 330.561ms
-151.101.65.194 github.global.ssl.fastly.net # 65.126ms
-185.199.109.133 raw.githubusercontent.com # 70.693ms
-140.82.112.4 gist.github.com # 276.434ms
+140.82.112.3 github.com
+151.101.65.194 github.global.ssl.fastly.net
+185.199.109.133 raw.githubusercontent.com
+140.82.112.4 gist.github.com
+185.199.109.133 camo.githubusercontent.com
+140.82.112.22 collector.github.com
+140.82.114.5 api.github.com
+185.199.109.133 avatars.githubusercontent.com
+185.199.109.133 raw.github.com
 # ghseek end
 ```
 
