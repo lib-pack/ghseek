@@ -6,7 +6,7 @@ import sudo from "sudo-prompt";
 import got from "got";
 import ping from "ping";
 import { resolve, join } from "path";
-import { writeFileSync, existsSync, readFileSync } from "fs";
+import { writeFileSync, existsSync, readFileSync, rmSync } from "fs";
 import { getIPs } from "./shared.js";
 
 const cwd = process.cwd();
@@ -74,6 +74,10 @@ export async function bin(argv: string[] = process.argv) {
 				findDomainInfo("github.global.ssl.fastly.net"),
 				findDomainInfo("raw.githubusercontent.com"),
 				findDomainInfo("gist.github.com"),
+				findDomainInfo("camo.githubusercontent.com"),
+				findDomainInfo("collector.github.com"),
+				findDomainInfo("api.github.com"),
+				findDomainInfo("avatars.githubusercontent.com"),
 			]);
 
 			const githubHosts = `# ghseek github\n${hostsBlocks.map((block) => `${block.preIp} ${block.domain}`).join("\n")}\n# ghseek end\n`;
@@ -122,6 +126,8 @@ export async function bin(argv: string[] = process.argv) {
 			console.log(
 				"\n" + "Exec " + chalk.blue(`\`cat ${hosts_path}\``) + ` view result.`,
 			);
+
+			rmSync(hostsBk);
 		});
 
 	program
