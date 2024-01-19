@@ -32,7 +32,7 @@ ghseek down <github url> [文件名称] # 加速下载github文件，github url�
 
 ## Append Hosts
 
-添加的 hosts 类似于下面的内容，IP是通过 https://sites.ipaddress.com 获取的最新 DNS IP.
+添加的 hosts 类似于下面的内容，IP是通过 https://sites.ipaddress.com 获取的最新 CDN IP.
 
 ```
 # ghseek github
