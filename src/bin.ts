@@ -75,7 +75,7 @@ export async function bin(argv: string[] = process.argv) {
 			const githubRawInfo = await findDomainInfo("raw.githubusercontent.com");
 			const githubGistInfo = await findDomainInfo("gist.github.com");
 
-			const githubHosts = `# ghseek github\n${githubInfo.preIp} github.com # ${githubInfo.preArg}ms\n${githubSSLInfo.preIp} github.global.ssl.fastly.net # ${githubSSLInfo.preArg}ms\n${githubRawInfo.preIp} raw.githubusercontent.com # ${githubRawInfo.preArg}ms\n${githubGistInfo.preIp} gist.github.com # ${githubGistInfo.preArg}ms\n# ghseek end\n`;
+			const githubHosts = `# ghseek github\n${githubInfo.preIp} github.com\n${githubSSLInfo.preIp} github.global.ssl.fastly.net\n${githubRawInfo.preIp} raw.githubusercontent.com\n${githubGistInfo.preIp} gist.github.com\n# ghseek end\n`;
 			let hosts = readFileSync(hosts_path, "utf-8");
 			if (hosts.includes("# ghseek github")) {
 				console.log(chalk.blue(`\nupdate hosts ${hosts_path}\n`));
