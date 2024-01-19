@@ -75,40 +75,51 @@ export async function bin(argv: string[] = process.argv) {
 			const githubRawInfo = await findDomainInfo("raw.githubusercontent.com");
 			const githubGistInfo = await findDomainInfo("gist.github.com");
 
-			const githubHosts = `\n# ghseek github\n${githubInfo.preIp} github.com # ${githubInfo.preArg}ms\n${githubSSLInfo.preIp} github.global.ssl.fastly.net # ${githubSSLInfo.preArg}ms\n${githubRawInfo.preIp} raw.githubusercontent.com # ${githubRawInfo.preArg}ms\n${githubGistInfo.preIp} gist.github.com # ${githubGistInfo.preArg}ms\n# ghseek end\n`;
+			const githubHosts = `# ghseek github\n${githubInfo.preIp} github.com # ${githubInfo.preArg}ms\n${githubSSLInfo.preIp} github.global.ssl.fastly.net # ${githubSSLInfo.preArg}ms\n${githubRawInfo.preIp} raw.githubusercontent.com # ${githubRawInfo.preArg}ms\n${githubGistInfo.preIp} gist.github.com # ${githubGistInfo.preArg}ms\n# ghseek end\n`;
 			let hosts = readFileSync(hosts_path, "utf-8");
 			if (hosts.includes("# ghseek github")) {
-				console.log(chalk.yellow(`\nupdate hosts ${hosts_path}\n`));
+				console.log(chalk.blue(`\nupdate hosts ${hosts_path}\n`));
 				hosts = hosts.replace(
 					/# ghseek github[\s\S]*# ghseek end/,
 					githubHosts,
 				);
 			} else {
-				console.log(chalk.yellow(`\nappend hosts ${hosts_path}\n`));
-				hosts += githubHosts;
+				console.log(chalk.blue(`\nappend hosts ${hosts_path}\n`));
+				hosts += "\n" + githubHosts;
 			}
 
-			console.log("\n" + chalk.blue("Updated Hosts:") + "\n" + githubHosts);
+			console.log(githubHosts);
 			const hostsBk = join(cwd, "hosts.bk");
 			writeFileSync(hostsBk, hosts);
-			await new Promise<void>((resolve) =>
+			console.log(
+				chalk.blue(
+					`\nAuthorization to modify the hosts file ${hosts_path},please enter your password.`,
+				),
+			);
+
+			await new Promise<void>((resolve, reject) =>
 				sudo.exec(
 					'cat "' + hostsBk + '" > ' + hosts_path,
 					{
 						name: "ghseek",
 					},
 					(error, stdout, stderr) => {
-						resolve();
-
 						if (error) {
-							console.error(chalk.red(error));
+							console.error(
+								chalk.red(
+									'Authorization to modify the hosts file failed, please try again with "sudo"',
+								),
+							);
+							reject(error);
 							return;
 						}
+
+						resolve();
 					},
 				),
 			);
 			console.log(
-				"\n" + "Exec " + chalk.blue(`\`cat ${hosts_path}}\``) + ` view result.`,
+				"\n" + "Exec " + chalk.blue(`\`cat ${hosts_path}\``) + ` view result.`,
 			);
 		});
 
