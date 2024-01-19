@@ -104,11 +104,7 @@ export async function bin(argv: string[] = process.argv) {
 
 			await new Promise<void>((resolve, reject) =>
 				sudo.exec(
-					'cat "' +
-						hostsBk +
-						'" > ' +
-						hosts_path +
-						" && killall -HUP mDNSResponder",
+					'cat "' + hostsBk + '" > ' + hosts_path,
 					{
 						name: "ghseek",
 					},
@@ -151,7 +147,12 @@ export async function bin(argv: string[] = process.argv) {
 			// 	),
 			// );
 			console.log(
-				"\n" + "Exec " + chalk.blue(`\`cat ${hosts_path}\``) + ` view result.`,
+				"\n" +
+					"Exec " +
+					chalk.blue(`\`cat ${hosts_path}\``) +
+					` view result.\n\nflush DNS cache: \n macos: ` +
+					chalk.blue(`\`sudo killall -HUP mDNSResponder\``) +
+					`\n linux: Check by yourself.\n`,
 			);
 
 			rmSync(hostsBk);
