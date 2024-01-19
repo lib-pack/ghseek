@@ -1,0 +1,26 @@
+{
+	"version": "0.0.0",
+	"author": { "email": "1829913225@qq.com" },
+	"description": "这是一个github加速器通过hosts实现",
+	"devDependencies": {},
+	"engines": { "node": ">=18" },
+	"files": ["lib/", "package.json", "LICENSE.md", "README.md"],
+	"license": "MIT",
+	"lint-staged": { "*": "prettier --ignore-unknown --write" },
+	"main": "./lib/index.js",
+	"name": "ghseek",
+	"packageManager": "pnpm@8.14.1",
+	"publishConfig": { "provenance": true },
+	"repository": { "type": "git", "url": "https://github.com/lib-pack/ghseek" },
+	"scripts": {
+		"build": "tsup",
+		"format": "prettier .",
+		"lint": "eslint . .*js --max-warnings 0",
+		"lint:knip": "knip",
+		"prepare": "husky install",
+		"should-semantic-release": "should-semantic-release --verbose",
+		"test": "vitest",
+		"tsc": "tsc"
+	},
+	"type": "module"
+}
