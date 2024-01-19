@@ -1,3 +1,9 @@
+## [0.1.2](https://github.com/lib-pack/ghseek/compare/0.1.1...0.1.2) (2024-01-19)
+
+### Bug Fixes
+
+- 添加版本查看命令 ([620eb56](https://github.com/lib-pack/ghseek/commit/620eb56e5e2d87918f9813d8054839a94294051e))
+
 ## [0.1.1](https://github.com/lib-pack/ghseek/compare/0.1.0...0.1.1) (2024-01-19)
 
 ### Bug Fixes
