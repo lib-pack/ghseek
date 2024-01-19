@@ -17,16 +17,21 @@
 
 ## Usage
 
-```shell
-npm i ghseek
-```
-```ts
-import { greet } from "ghseek";
+> 注意目前只支持 linux、macos 系统。
 
-greet("Hello, world! 💖");
+```shell
+npm i -g ghseek
+```
+
+```shell
+ghseek seek # 更新本地的 hosts 文件来加速 github 的 push、pull、clone 等操作
+
+ghseek clone <github clone url> [目录位置] # 加速克隆代码
+ghseek down <github url> [文件名称] # 加速下载github文件，github url可以是 release url、raw url
 ```
 
 ## Contributors
+
 <!-- spellchecker: disable -->
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
