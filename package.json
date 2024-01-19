@@ -1,6 +1,6 @@
 {
 	"name": "ghseek",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "这是一个github加速器通过hosts实现",
 	"repository": {
 		"type": "git",
