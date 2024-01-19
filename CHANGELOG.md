@@ -1,3 +1,9 @@
+## [0.1.6](https://github.com/lib-pack/ghseek/compare/0.1.5...0.1.6) (2024-01-19)
+
+### Bug Fixes
+
+- 刷新缓存 ([f10f050](https://github.com/lib-pack/ghseek/commit/f10f0501e7154d21c415c28235dd5b71b5558be5))
+
 ## [0.1.5](https://github.com/lib-pack/ghseek/compare/0.1.4...0.1.5) (2024-01-19)
 
 ### Bug Fixes
