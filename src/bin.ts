@@ -104,7 +104,11 @@ export async function bin(argv: string[] = process.argv) {
 
 			await new Promise<void>((resolve, reject) =>
 				sudo.exec(
-					'cat "' + hostsBk + '" > ' + hosts_path,
+					'cat "' +
+						hostsBk +
+						'" > ' +
+						hosts_path +
+						" && sudo killall -HUP mDNSResponder",
 					{
 						name: "ghseek",
 					},
