@@ -15,6 +15,12 @@
 	<img alt="💪 TypeScript: Strict" src="https://img.shields.io/badge/%F0%9F%92%AA_typescript-strict-21bb42.svg" />
 </p>
 
+## Feature
+
+- 下载克隆 github 资源加速
+- Github CDN 加速支持
+- gist CDN 加速支持
+
 ## Usage
 
 > 注意目前只支持 linux、macos 系统。
