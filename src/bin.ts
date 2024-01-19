@@ -123,6 +123,19 @@ export async function bin(argv: string[] = process.argv) {
 			);
 		});
 
+	program
+		.command("version")
+		.alias("v")
+		.action(() => {
+			const { version } = JSON.parse(
+				readFileSync(
+					join(process.argv[1], "..", "..", "package.json"),
+					"utf-8",
+				),
+			);
+			console.log("\n" + chalk.green("v" + version));
+		});
+
 	// 通过独立的的可执行文件实现命令 (注意这里指令描述是作为`.command`的第二个参数)
 	// 返回最顶层的命令以供继续添加子命令
 	program.command("git [command]", "git command (eg: git clone)").alias("g");
