@@ -67,15 +67,16 @@ export async function bin(argv: string[] = process.argv) {
 			"Update the local hosts file (/etc/hosts) to speed up access to github.",
 		)
 		.action(async (hosts_path: string = resolve("/etc/hosts")) => {
-			console.log(chalk.blue("seek"), hosts_path);
-			const githubInfo = await findDomainInfo("github.com");
-			const githubSSLInfo = await findDomainInfo(
-				"github.global.ssl.fastly.net",
-			);
-			const githubRawInfo = await findDomainInfo("raw.githubusercontent.com");
-			const githubGistInfo = await findDomainInfo("gist.github.com");
+			console.log(chalk.blue(`start seek github update hosts ${hosts_path}`));
 
-			const githubHosts = `# ghseek github\n${githubInfo.preIp} github.com\n${githubSSLInfo.preIp} github.global.ssl.fastly.net\n${githubRawInfo.preIp} raw.githubusercontent.com\n${githubGistInfo.preIp} gist.github.com\n# ghseek end\n`;
+			const hostsBlocks = await Promise.all([
+				findDomainInfo("github.com"),
+				findDomainInfo("github.global.ssl.fastly.net"),
+				findDomainInfo("raw.githubusercontent.com"),
+				findDomainInfo("gist.github.com"),
+			]);
+
+			const githubHosts = `# ghseek github\n${hostsBlocks.map((block) => `${block.preIp} ${block.domain}`).join("\n")}\n# ghseek end\n`;
 			let hosts = readFileSync(hosts_path, "utf-8");
 			if (hosts.includes("# ghseek github")) {
 				console.log(chalk.blue(`\nupdate hosts ${hosts_path}\n`));
@@ -146,7 +147,7 @@ export async function bin(argv: string[] = process.argv) {
 }
 
 async function findDomainInfo(domain: string) {
-	console.log("\n" + chalk.blue(`${domain}:`));
+	const logs = [["\n" + chalk.blue(`${domain}:`)]];
 
 	const ips = await getIPs(domain);
 	let preArg = Number.MAX_SAFE_INTEGER;
@@ -154,22 +155,25 @@ async function findDomainInfo(domain: string) {
 	for (let i = 0; i < ips.length; i++) {
 		const ip = ips[i];
 		const net = await ping.promise.probe(ip, { min_reply: 3 });
-		console.log(chalk.blue("-"), chalk.cyan(ip), chalk.yellow(net.avg + "ms"));
+		logs.push([chalk.blue("-"), chalk.cyan(ip), chalk.yellow(net.avg + "ms")]);
 		if (Number(net.avg) < preArg) {
 			preIp = ip;
 			preArg = Number(net.avg);
 		}
 	}
 
-	console.log(
+	logs.push([
 		chalk.blue(">"),
 		chalk.blue("preferred:"),
 		chalk.cyan(preIp),
 		chalk.yellow(preArg + "ms"),
-	);
+	]);
+
+	console.log(logs.map((log) => log.join(" ")).join("\n"));
 
 	return {
 		preIp,
 		preArg,
+		domain,
 	};
 }
