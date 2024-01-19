@@ -1,3 +1,9 @@
+## [0.1.1](https://github.com/lib-pack/ghseek/compare/0.1.0...0.1.1) (2024-01-19)
+
+### Bug Fixes
+
+- 优化文案 ([347f911](https://github.com/lib-pack/ghseek/commit/347f911b1c2ea44a7bf28a3643c25f1ebc8574e2))
+
 # [0.1.0](https://github.com/lib-pack/ghseek/compare/0.0.1...0.1.0) (2024-01-19)
 
 ### Features
