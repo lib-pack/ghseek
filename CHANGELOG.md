@@ -1,3 +1,9 @@
+## [0.1.5](https://github.com/lib-pack/ghseek/compare/0.1.4...0.1.5) (2024-01-19)
+
+### Bug Fixes
+
+- 添加更多域名 ([584de65](https://github.com/lib-pack/ghseek/commit/584de656e490e1da1f61ded254ed1f557d307001))
+
 ## [0.1.4](https://github.com/lib-pack/ghseek/compare/0.1.3...0.1.4) (2024-01-19)
 
 ### Bug Fixes
