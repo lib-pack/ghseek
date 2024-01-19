@@ -63,9 +63,11 @@ export async function bin(argv: string[] = process.argv) {
 
 	program
 		.command("seek [hosts_path]")
-		.description("Update the local hosts file to speed up access to github.")
+		.description(
+			"Update the local hosts file (/etc/hosts) to speed up access to github.",
+		)
 		.action(async (hosts_path: string = resolve("/etc/hosts")) => {
-			console.log(chalk.blue("seek:"), hosts_path);
+			console.log(chalk.blue("seek"), hosts_path);
 			const githubInfo = await findDomainInfo("github.com");
 			const githubSSLInfo = await findDomainInfo(
 				"github.global.ssl.fastly.net",
@@ -86,7 +88,7 @@ export async function bin(argv: string[] = process.argv) {
 				hosts += githubHosts;
 			}
 
-			console.log("\n" + chalk.blue("Updated Hosts:") + "\n" + hosts);
+			console.log("\n" + chalk.blue("Updated Hosts:") + "\n" + githubHosts);
 			const hostsBk = join(cwd, "hosts.bk");
 			writeFileSync(hostsBk, hosts);
 			await new Promise<void>((resolve) =>
@@ -104,6 +106,9 @@ export async function bin(argv: string[] = process.argv) {
 						}
 					},
 				),
+			);
+			console.log(
+				"\n" + "Exec " + chalk.blue(`\`cat ${hosts_path}}\``) + ` view result.`,
 			);
 		});
 
