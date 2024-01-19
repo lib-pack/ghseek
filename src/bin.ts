@@ -5,6 +5,7 @@ import chalk from "chalk";
 import sudo from "sudo-prompt";
 import got from "got";
 import ping from "ping";
+import throat from "throat";
 import { resolve, join } from "path";
 import { writeFileSync, existsSync, readFileSync, rmSync } from "fs";
 import { getIPs } from "./shared.js";
@@ -12,6 +13,8 @@ import { getIPs } from "./shared.js";
 const cwd = process.cwd();
 
 const program = new Command();
+
+const throatFn = throat as any;
 
 export async function bin(argv: string[] = process.argv) {
 	program
@@ -69,18 +72,23 @@ export async function bin(argv: string[] = process.argv) {
 		.action(async (hosts_path: string = resolve("/etc/hosts")) => {
 			console.log(chalk.blue(`start seek github update hosts ${hosts_path}`));
 
-			const hostsBlocks = await Promise.all([
-				findDomainInfo("github.com"),
-				findDomainInfo("github.global.ssl.fastly.net"),
-				findDomainInfo("raw.githubusercontent.com"),
-				findDomainInfo("gist.github.com"),
-				findDomainInfo("camo.githubusercontent.com"),
-				findDomainInfo("collector.github.com"),
-				findDomainInfo("api.github.com"),
-				findDomainInfo("avatars.githubusercontent.com"),
-			]);
+			const hostsBlocks: any[] = await Promise.all(
+				[
+					"github.com",
+					"github.global.ssl.fastly.net",
+					"raw.githubusercontent.com",
+					"gist.github.com",
+					"camo.githubusercontent.com",
+					"collector.github.com",
+					"api.github.com",
+					"avatars.githubusercontent.com",
+				].map(throatFn(3, (domain: string) => findDomainInfo(domain))),
+			);
 
-			const githubHosts = `# ghseek github\n${hostsBlocks.map((block) => `${block.preIp} ${block.domain}`).join("\n")}\n# ghseek end\n`;
+			const githubHosts = `# ghseek github\n${hostsBlocks
+				.filter((block) => block.preIp)
+				.map((block: any) => `${block.preIp} ${block.domain}`)
+				.join("\n")}\n# ghseek end\n`;
 			let hosts = readFileSync(hosts_path, "utf-8");
 			if (hosts.includes("# ghseek github")) {
 				console.log(chalk.blue(`\nupdate hosts ${hosts_path}\n`));

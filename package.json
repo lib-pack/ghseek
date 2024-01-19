@@ -54,7 +54,8 @@
 		"git-url-parse": "^14.0.0",
 		"got": "^14.0.0",
 		"ping": "^0.4.4",
-		"sudo-prompt": "^9.2.1"
+		"sudo-prompt": "^9.2.1",
+		"throat": "^6.0.2"
 	},
 	"devDependencies": {
 		"@octokit/request-error": "^5.0.1",
