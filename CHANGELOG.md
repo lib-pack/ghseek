@@ -1,3 +1,10 @@
+## [0.1.4](https://github.com/lib-pack/ghseek/compare/0.1.3...0.1.4) (2024-01-19)
+
+### Bug Fixes
+
+- 添加变速器 ([dabadfb](https://github.com/lib-pack/ghseek/commit/dabadfbb131036963abd8d8539dbc4d48577c2a9))
+- 添加更多域名 ([bba88a0](https://github.com/lib-pack/ghseek/commit/bba88a000bb6de6efed33ad14fcba565dc0140bb))
+
 ## [0.1.3](https://github.com/lib-pack/ghseek/compare/0.1.2...0.1.3) (2024-01-19)
 
 ### Bug Fixes
