@@ -9,6 +9,7 @@ import throat from "throat";
 import { resolve, join } from "path";
 import { writeFileSync, existsSync, readFileSync, rmSync } from "fs";
 import { getIPs } from "./shared.js";
+import domain from "./domain.js";
 
 const cwd = process.cwd();
 
@@ -73,16 +74,7 @@ export async function bin(argv: string[] = process.argv) {
 			console.log(chalk.blue(`start seek github update hosts ${hosts_path}`));
 
 			const hostsBlocks: any[] = await Promise.all(
-				[
-					"github.com",
-					"github.global.ssl.fastly.net",
-					"raw.githubusercontent.com",
-					"gist.github.com",
-					"camo.githubusercontent.com",
-					"collector.github.com",
-					"api.github.com",
-					"avatars.githubusercontent.com",
-				].map(throatFn(3, (domain: string) => findDomainInfo(domain))),
+				domain.map(throatFn(3, (domain: string) => findDomainInfo(domain))),
 			);
 
 			const githubHosts = `# ghseek github\n${hostsBlocks
