@@ -108,7 +108,7 @@ export async function bin(argv: string[] = process.argv) {
 						hostsBk +
 						'" > ' +
 						hosts_path +
-						" && sudo killall -HUP mDNSResponder",
+						" && killall -HUP mDNSResponder",
 					{
 						name: "ghseek",
 					},
@@ -127,6 +127,29 @@ export async function bin(argv: string[] = process.argv) {
 					},
 				),
 			);
+			console.log(chalk.blue(`\nflush dns cache`));
+
+			// await new Promise<void>((resolve, reject) =>
+			// 	sudo.exec(
+			// 		"killall -HUP mDNSResponder",
+			// 		{
+			// 			name: "ghseek",
+			// 		},
+			// 		(error, stdout, stderr) => {
+			// 			if (error) {
+			// 				console.error(
+			// 					chalk.red(
+			// 						'Authorization to modify the hosts file failed, please try again with "sudo"',
+			// 					),
+			// 				);
+			// 				reject(error);
+			// 				return;
+			// 			}
+
+			// 			resolve();
+			// 		},
+			// 	),
+			// );
 			console.log(
 				"\n" + "Exec " + chalk.blue(`\`cat ${hosts_path}\``) + ` view result.`,
 			);
