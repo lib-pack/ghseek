@@ -110,13 +110,17 @@ export async function bin(argv: string[] = process.argv) {
 					},
 					(error, stdout, stderr) => {
 						if (error) {
-							console.error(
-								chalk.red(
-									'Authorization to modify the hosts file failed, please try again with "sudo"',
-								),
-							);
-							reject(error);
-							return;
+							try {
+								writeFileSync(hosts_path, hosts);
+							} catch (error) {
+								console.error(
+									chalk.red(
+										'Authorization to modify the hosts file failed, please try again with "sudo ghseek seek"',
+									),
+								);
+								reject(error);
+								return;
+							}
 						}
 
 						resolve();
@@ -162,13 +166,20 @@ export async function bin(argv: string[] = process.argv) {
 		.command("version")
 		.alias("v")
 		.action(() => {
-			const { version } = JSON.parse(
-				readFileSync(
-					join(process.argv[1], "..", "..", "package.json"),
-					"utf-8",
-				),
-			);
-			console.log("\n" + chalk.green("v" + version));
+			try {
+				const { version } = JSON.parse(
+					readFileSync(
+						join(process.argv[1], "..", "..", "package.json"),
+						"utf-8",
+					),
+				);
+				console.log("\n" + chalk.green("v" + version));
+			} catch (error) {
+				const { version } = JSON.parse(
+					readFileSync(join(process.argv[1], "..", "package.json"), "utf-8"),
+				);
+				console.log("\n" + chalk.green("v" + version));
+			}
 		});
 
 	// 通过独立的的可执行文件实现命令 (注意这里指令描述是作为`.command`的第二个参数)
