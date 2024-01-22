@@ -1,3 +1,9 @@
+## [0.1.9](https://github.com/lib-pack/ghseek/compare/0.1.8...0.1.9) (2024-01-22)
+
+### Bug Fixes
+
+- 修复在特殊情况下不会弹出输入密码的处理问题方式 ([ab74dc6](https://github.com/lib-pack/ghseek/commit/ab74dc685349670a565db0872b00dc5d1f5b3791))
+
 ## [0.1.8](https://github.com/lib-pack/ghseek/compare/0.1.7...0.1.8) (2024-01-19)
 
 ### Bug Fixes
