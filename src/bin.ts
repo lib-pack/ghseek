@@ -85,7 +85,7 @@ export async function bin(argv: string[] = process.argv) {
 			if (hosts.includes("# ghseek github")) {
 				console.log(chalk.blue(`\nupdate hosts ${hosts_path}\n`));
 				hosts = hosts.replace(
-					/# ghseek github[\s\S]*# ghseek end/,
+					/# ghseek github[\s\S]*?# ghseek end/,
 					githubHosts,
 				);
 			} else {
@@ -163,6 +163,119 @@ export async function bin(argv: string[] = process.argv) {
 		});
 
 	program
+		.command("host <domain>")
+		.description(
+			"append the local hosts file (/etc/hosts) to speed up access to domain.",
+		)
+		.action(async (domain_url: string) => {
+			const hosts_path: string = resolve("/etc/hosts");
+			const blockKey = domain_url.replace(/\./g, "_");
+			console.log(chalk.blue(`start seek hosts ${domain_url}`));
+			const hostsBlocks: any[] = [await findDomainInfo(domain_url)];
+			const githubHosts = `# ghseek ${blockKey}\n${hostsBlocks
+				.filter((block) => block.preIp)
+				.map((block: any) => `${block.preIp} ${block.domain}`)
+				.join("\n")}\n# ghseek end\n`;
+			let hosts = readFileSync(hosts_path, "utf-8");
+			if (hosts.includes(`# ghseek ${blockKey}`)) {
+				console.log(chalk.blue(`\nupdate hosts ${domain_url}\n`));
+				hosts = hosts.replace(
+					new RegExp(`# ghseek ${blockKey}[\\s\\S]*?# ghseek end`),
+					githubHosts,
+				);
+			} else {
+				console.log(chalk.blue(`\nappend hosts ${domain_url}\n`));
+				hosts += "\n" + githubHosts;
+			}
+
+			console.log(githubHosts);
+			const hostsBk = join(cwd, "hosts.bk");
+			writeFileSync(hostsBk, hosts);
+			console.log(
+				chalk.blue(
+					`\nAuthorization to modify the hosts file ${domain_url},please enter your password.`,
+				),
+			);
+
+			await new Promise<void>((resolve, reject) =>
+				sudo.exec(
+					'cat "' + hostsBk + '" > ' + domain_url,
+					{
+						name: "ghseek",
+					},
+					(error, stdout, stderr) => {
+						if (error) {
+							try {
+								writeFileSync(hosts_path, hosts);
+							} catch (error) {
+								console.error(
+									chalk.red(
+										'Authorization to modify the hosts file failed, please try again with "sudo ghseek seek"',
+									),
+								);
+								reject(error);
+								return;
+							}
+						}
+
+						resolve();
+					},
+				),
+			);
+			console.log(chalk.blue(`\nflush dns cache`));
+
+			// await new Promise<void>((resolve, reject) =>
+			// 	sudo.exec(
+			// 		"killall -HUP mDNSResponder",
+			// 		{
+			// 			name: "ghseek",
+			// 		},
+			// 		(error, stdout, stderr) => {
+			// 			if (error) {
+			// 				console.error(
+			// 					chalk.red(
+			// 						'Authorization to modify the hosts file failed, please try again with "sudo"',
+			// 					),
+			// 				);
+			// 				reject(error);
+			// 				return;
+			// 			}
+
+			// 			resolve();
+			// 		},
+			// 	),
+			// );
+			console.log(
+				"\n" +
+					"Exec " +
+					chalk.blue(`\`cat ${domain_url}\``) +
+					` view result.\n\nflush DNS cache: \n macos: ` +
+					chalk.blue(`\`sudo killall -HUP mDNSResponder\``) +
+					`\n linux: Check by yourself.\n`,
+			);
+
+			rmSync(hostsBk);
+		});
+
+	program
+		.command("ping <domain>")
+		.description(
+			"ping domain to find the fastest ip, and print the hosts block.",
+		)
+		.action(async (domain_url: string) => {
+			const blockKey = domain_url.replace(/\./g, "_");
+			console.log(chalk.blue(`ping ${domain_url}`));
+			const hostsBlocks: any[] = [await findDomainInfo(domain_url)];
+			const githubHosts = `# ghseek ${blockKey}\n${hostsBlocks
+				.filter((block) => block.preIp)
+				.map((block: any) => `${block.preIp} ${block.domain}`)
+				.join("\n")}\n# ghseek end\n`;
+
+			console.log("\n" + chalk.blue(`hosts block:`));
+			console.log(githubHosts);
+		});
+
+	program
 		.command("version")
 		.alias("v")
 		.action(() => {
@@ -187,7 +300,7 @@ export async function bin(argv: string[] = process.argv) {
 	program.command("git [command]", "git command (eg: git clone)").alias("g");
 
 	await program.parseAsync(argv);
-	console.log("\n", chalk.green("done"), program.args[0], "command.");
+	console.log(chalk.green("done"), program.args[0], "command.");
 	return 0;
 }
 
