@@ -1,3 +1,9 @@
+# [0.2.0](https://github.com/lib-pack/ghseek/compare/0.1.9...0.2.0) (2024-01-22)
+
+### Features
+
+- 新增两个实用的命令 ([90b28c1](https://github.com/lib-pack/ghseek/commit/90b28c1d593e3c2f2ea0a5e5e5cbdd2a225b5819))
+
 ## [0.1.9](https://github.com/lib-pack/ghseek/compare/0.1.8...0.1.9) (2024-01-22)
 
 ### Bug Fixes
